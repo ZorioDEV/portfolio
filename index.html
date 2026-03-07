@@ -411,6 +411,11 @@
             }
         }
 
+        /* Hide logo on desktop by default */
+        .home-logo {
+            display: none;
+        }
+
         .home-title {
             font-family: var(--font-accent);
             font-size: 4.5rem;
@@ -898,6 +903,13 @@
             opacity: 0;
             visibility: hidden;
             transition: opacity var(--transition-medium) ease, visibility var(--transition-medium) ease;
+
+            /* Hide scrollbar */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+        }
+        .project-tab-content::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
         }
         .project-tab-content.active {
             opacity: 1;
@@ -1028,7 +1040,6 @@
                 flex-direction: column;
                 align-items: center;
                 gap: 30px;
-                padding: 0 20px;
             }
         }
 
@@ -1179,6 +1190,56 @@
                 letter-spacing: 1px;
             }
         }
+
+        /* ===== MOBILE HOME PAGE: LOGO CENTERED WITH TEXT OVERLAY ===== */
+        @media (max-width: 767px) {
+            .home-logo-container {
+                position: relative;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .home-logo {
+                display: block !important;
+                max-width: 90%;
+                height: auto;
+                border-radius: 8px;
+            }
+
+            .home-logo-container .home-title {
+                position: absolute;
+                /* Adjust the bottom value to move the text vertically */
+                bottom: 85%;               /* ← change this value to move text up/down */
+                left: 50%;
+                transform: translateX(-50%);
+                font-size: 1.2rem !important;
+                color: #fff;
+                white-space: nowrap;         /* keep text on one line */
+                width: 100%;                  /* stretch to full width of container */
+                text-align: center;            /* center the text */
+                letter-spacing: 1px;
+                font-weight: 300;
+                line-height: 1.3;
+                margin: 0;
+                /* Background and box styling removed */
+            }
+        }
+
+        /* ===== HIDE SCROLLBARS GLOBALLY ===== */
+        .project-tab-content {
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE and Edge */
+        }
+        .project-tab-content::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+        .about-content::-webkit-scrollbar,
+        .projects-carousel-container::-webkit-scrollbar {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -1239,11 +1300,14 @@
 
     <!-- Main Content Container -->
     <main class="main-content">
-        <!-- Home Page (only title remains) -->
+        <!-- Home Page -->
         <div class="page-container active" id="home-page">
             <div class="home-content">
-                <h1 class="home-title">GAMEPLAY<br>PROGRAMMER</h1>
-                <!-- Subtitle and studio text removed per request -->
+                <div class="home-logo-container">
+                    <img src="media/Name_LG.png" alt="Tyler Bye Logo" class="home-logo" onerror="this.style.display='none';">
+                    <!-- Removed <br> to keep title on one line -->
+                    <h1 class="home-title">GAMEPLAY PROGRAMMER</h1>
+                </div>
             </div>
         </div>
 
