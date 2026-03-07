@@ -73,7 +73,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.9); 
+            background-color: rgba(0, 0, 0, 0.8); 
             pointer-events: none;
         }
 
@@ -154,10 +154,10 @@
             .top-nav {
                 top: auto;
                 bottom: 0;
-                height: 70px;
-                padding: 10px 20px;
-                border-top: none;
+                height: 90px; /* slightly taller to accommodate bigger buttons */
+                padding: 10px 15px;
                 transform: none; /* no need for absolute children on mobile */
+                /* background removed – now transparent */
             }
         }
 
@@ -193,7 +193,7 @@
         }
         @media (max-width: 767px) {
             .nav-links {
-                gap: 30px;
+                gap: 25px;
                 justify-content: center;
                 width: 100%;
             }
@@ -213,8 +213,29 @@
         }
         @media (max-width: 767px) {
             .nav-link {
-                font-size: 1rem;
+                font-size: 1.2rem;
                 letter-spacing: 1px;
+                padding: 10px 18px;
+                border: 1px solid var(--color-border);
+                border-radius: 30px;
+                background-color: transparent;
+                backdrop-filter: blur(5px);
+                transition: all var(--transition-medium) ease;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                white-space: nowrap;
+                line-height: 1.2;
+            }
+            .nav-link:hover,
+            .nav-link.active {
+                background-color: rgba(255, 255, 255, 0.05);
+                border-color: var(--color-text-muted);
+                color: var(--color-text-light);
+                transform: scale(1.05);
+            }
+            .nav-link::after {
+                display: none; /* Remove underline on mobile */
             }
         }
         .nav-link:hover, .nav-link.active { color: var(--color-text-light); }
@@ -557,6 +578,7 @@
             color: var(--color-text-light);
             background-color: rgba(255, 255, 255, 0.05);
             border-color: var(--color-text-muted);
+            transform: scale(1.1);
         }
 
         /* ===== ABOUT PAGE ===== */
@@ -764,7 +786,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 30px 50px;
+            padding: 20px 40px;
             background-color: rgba(10, 10, 10, 0.9);
             border-bottom: 1px solid var(--color-border);
             flex-shrink: 0;
@@ -773,21 +795,22 @@
 
         .project-detail-title {
             font-family: var(--font-accent);
-            font-size: 2.2rem;
+            font-size: 1.8rem;
             font-weight: 300;
             letter-spacing: 2px;
             color: var(--color-text-light);
         }
         @media (max-width: 767px) { .project-detail-title { font-size: 1.5rem; } }
 
+        /* Close button — now consistent with other buttons (border, hover scale) */
         .close-detail-btn {
             background: none;
-            border: none;
+            border: 1px solid var(--color-border);
             color: var(--color-text-light);
-            font-size: 1.8rem;
+            font-size: 1.4rem;
             cursor: pointer;
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -796,7 +819,8 @@
         }
         .close-detail-btn:hover {
             background-color: rgba(255, 255, 255, 0.05);
-            transform: rotate(90deg);
+            border-color: var(--color-text-muted);
+            transform: scale(1.1);
         }
 
         /* Tab Navigation */
@@ -1073,6 +1097,7 @@
         }
 
         .lightbox-close {
+            display: none;
             position: absolute;
             top: 30px;
             right: 40px;
@@ -1118,6 +1143,42 @@
 
         /* Prevent body scroll when overlay open */
         body.overlay-open { overflow: hidden; }
+
+        /* ===== DESKTOP: MOVE TABS INTO HEADER ===== */
+        @media (min-width: 768px) {
+            .project-detail-header {
+                position: relative;
+            }
+            .project-tabs {
+                position: absolute;
+                top: 40px;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                display: flex;
+                gap: 60px;
+                border-bottom: none;
+                background: transparent;
+                padding: 0;
+                z-index: 10;
+            }
+        }
+
+        /* ===== TABLET ADJUSTMENTS (768px - 1024px) ===== */
+        @media (min-width: 768px) and (max-width: 1024px) {
+            .project-detail-header {
+                padding: 20px 20px;
+            }
+            .project-detail-title {
+                font-size: 1.6rem;
+            }
+            .project-tabs {
+                gap: 40px;
+            }
+            .project-tab-btn {
+                font-size: 1rem;
+                letter-spacing: 1px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1144,7 +1205,8 @@
                 <a href="#" class="nav-link" data-page="projects">PROJECTS</a>
                 <a href="#" class="nav-link" data-page="about">ABOUT</a>
             </div>
-            <a href="#" class="resume-nav-btn" target="_blank" id="desktop-resume-btn">
+            <!-- Desktop resume button with PDF link -->
+            <a href="media/Bye_Tyler GP Resume.pdf" class="resume-nav-btn" target="_blank" id="desktop-resume-btn">
                 <i class="fas fa-file-pdf"></i> RESUME
             </a>
         </div>
@@ -1152,25 +1214,26 @@
 
     <!-- Mobile Social Icons & Resume -->
     <div class="mobile-social-icons">
-        <a href="#" class="social-icon-btn" target="_blank"><i class="fab fa-linkedin"></i></a>
-        <a href="#" class="social-icon-btn" target="_blank"><i class="fab fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/tjbye" class="social-icon-btn" target="_blank"><i class="fab fa-linkedin"></i></a>
+        <a href="https://github.com/ZorioDEV" class="social-icon-btn" target="_blank"><i class="fab fa-github"></i></a>
         <!-- Discord added between GitHub and Email -->
-        <a href="#" class="social-icon-btn" target="_blank"><i class="fab fa-discord"></i></a>
-        <a href="#" class="social-icon-btn" target="_blank"><i class="fas fa-envelope"></i></a>
+        <a href="https://discordapp.com/users/275459306537746434" class="social-icon-btn" target="_blank"><i class="fab fa-discord"></i></a>
+        <a href="mailto:tjbye05@gmail.com" class="social-icon-btn" target="_blank"><i class="fas fa-envelope"></i></a>
     </div>
 
-    <a href="#" class="resume-nav-btn" target="_blank" id="mobile-resume-btn">
+    <!-- Mobile resume button with PDF link -->
+    <a href="media/Bye_Tyler GP Resume.pdf" class="resume-nav-btn" target="_blank" id="mobile-resume-btn">
         <i class="fas fa-file-pdf"></i> RESUME
     </a>
 
     <!-- Desktop Social Icons Bottom Bar -->
     <div class="desktop-social-bar">
         <div class="desktop-social-icons">
-            <a href="#" class="social-icon-btn" target="_blank"><i class="fab fa-linkedin"></i></a>
-            <a href="#" class="social-icon-btn" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/tjbye" class="social-icon-btn" target="_blank"><i class="fab fa-linkedin"></i></a>
+            <a href="https://github.com/ZorioDEV" class="social-icon-btn" target="_blank"><i class="fab fa-github"></i></a>
             <!-- Discord added between GitHub and Email -->
-            <a href="#" class="social-icon-btn" target="_blank"><i class="fab fa-discord"></i></a>
-            <a href="#" class="social-icon-btn" target="_blank"><i class="fas fa-envelope"></i></a>
+            <a href="https://discordapp.com/users/275459306537746434" class="social-icon-btn" target="_blank"><i class="fab fa-discord"></i></a>
+            <a href="mailto:tjbye05@gmail.com" class="social-icon-btn" target="_blank"><i class="fas fa-envelope"></i></a>
         </div>
     </div>
 
@@ -1455,9 +1518,19 @@
             });
         }
 
+        // Forcefully reset scroll positions for all tabs
+        function resetTabScrolls() {
+            projectTabContents.forEach(tab => {
+                tab.scrollTop = 0;
+                // Also use scrollTo for good measure
+                if (tab.scrollTo) tab.scrollTo(0, 0);
+            });
+        }
+
         function updateProjectDetailContent(projectIndex) {
             const project = projects[projectIndex];
-            document.querySelector('.project-detail-title').textContent = `${project.name} - ${project.date}`;
+            // REMOVED DATE FROM TITLE
+            document.querySelector('.project-detail-title').textContent = `${project.name}`;
             
             // Overview
             const overviewGifDiv = document.querySelector('#overview-tab .overview-gif .gif-placeholder');
@@ -1495,6 +1568,12 @@
                 item.addEventListener('click', () => { openLightbox(icon, `Screenshot ${idx+1}`); });
                 galleryGrid.appendChild(item);
             });
+
+            // Reset scroll positions for all tabs after content update
+            resetTabScrolls();
+            
+            // Double-check after a tiny delay to ensure DOM is fully updated
+            setTimeout(resetTabScrolls, 10);
         }
 
         // ==================== LIGHTBOX ====================
@@ -1618,8 +1697,8 @@
         lightboxClose.addEventListener('click', closeLightbox);
         lightboxOverlay.addEventListener('click', (e) => { if (e.target === lightboxOverlay) closeLightbox(); });
 
-        desktopResumeBtn?.addEventListener('click', (e) => { e.preventDefault(); window.open('#', '_blank'); });
-        mobileResumeBtn?.addEventListener('click', (e) => { e.preventDefault(); window.open('#', '_blank'); });
+        // Resume buttons now use href directly – no need for JavaScript overrides.
+        // The default link behavior will open the PDF in a new tab.
 
         document.addEventListener('keydown', (e) => { if (projectDetailOverlay.classList.contains('active') && e.key === 'Escape') closeProjectDetail(); });
 
