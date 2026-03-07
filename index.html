@@ -650,6 +650,7 @@
         }
 
         .profile-image-container {
+            position: relative; /* needed for the pseudo‑element */
             width: 220px;
             height: 220px;
             border-radius: 50%;
@@ -657,10 +658,19 @@
             border: 4px solid var(--color-accent-silver);
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
             background-color: var(--color-bg-medium);
-            display: flex;
-            align-items: center;
-            justify-content: center;
             flex-shrink: 0;
+        }
+
+        .profile-image-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            box-shadow: inset 0 0 20px 10px rgba(0, 0, 0, 0.7); /* inner black glow */
+            pointer-events: none; /* lets clicks pass through to the image */
         }
 
         .profile-image-placeholder {
@@ -693,6 +703,22 @@
             font-size: 1.3rem;
             color: var(--color-accent-light);
             letter-spacing: 1.5px;
+        }
+
+        .profile-name-jp {
+            font-size: 1rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            color: var(--color-text-muted);
+            margin-bottom: 8px;
+            line-height: 1.2;
+            font-family: var(--font-primary);
+        }
+        @media (max-width: 767px) {
+            .profile-name-jp {
+                font-size: 0.9rem;
+                margin-bottom: 5px;
+            }
         }
 
         .introduction-section {
@@ -1329,34 +1355,48 @@
                     <div class="profile-intro-container">
                         <div class="profile-section">
                             <div class="profile-image-container">
-                                <div class="profile-image-placeholder"><i class="fas fa-user"></i></div>
+                                <!-- Replaced placeholder with actual profile image -->
+                                <img src="media/tjbye_pfp.png" alt="Tyler Bye" class="profile-image" style="width:100%; height:100%; object-fit:cover; border-radius:50%;" onerror="this.onerror=null; this.parentNode.innerHTML='<div class=\'profile-image-placeholder\'><i class=\'fas fa-user\'></i></div>';">
                             </div>
                             <div class="profile-text">
-                                <div class="profile-name">ALEX CHEN</div>
+                                <!-- Updated name -->
+                                <div class="profile-name">Tyler Bye</div>
+                                <div class="profile-name-jp">タイラー・バイ</div>
                                 <div class="profile-role">Gameplay Programmer</div>
                             </div>
                         </div>
                         <div class="introduction-section">
                             <h3>INTRODUCTION</h3>
-                            <p class="about-description">I'm a gameplay programmer focused on crafting responsive, engaging mechanics that create memorable player experiences. My work combines technical precision with creative problem-solving, drawing inspiration from Studio Ghibli's attention to detail and emotional depth in storytelling.</p>
-                            <p class="about-description">With a strong foundation in C++ and C#, I specialize in implementing core gameplay systems, AI behaviors, physics interactions, and optimization techniques. I believe that great gameplay emerges from systems that are both technically robust and creatively expressive.</p>
+                            <!-- Replaced with new introduction text (single paragraph) -->
+                            <p class="about-description">
+                                I am currently pursuing a BS degree in Game Design & Development at Rochester Institute of Technology (RIT), with two additional minors in Cybersecurity and Japanese. I previously served as a Software Engineer at MAGIC Spell Studios, where I developed a full-scale Unity mobile application, and have parallel experience in Unreal Engine 5 through self-published projects on the Google Play Store.
+                            </p>
+                            <p class="about-description">
+                                My work focuses on gameplay programming, using a strong foundation in C# and C++ to craft meaningful player-first digital experiences, from functional applications to immersive games. I am actively seeking Summer 2026 co-op/internship opportunities in software engineering and gameplay programming.
+                            </p>
+                            <!-- Removed the second paragraph (previously another description) -->
                         </div>
                     </div>
                     <div class="skills-section">
                         <h3>TECHNICAL SKILLS</h3>
                         <div class="skills-list">
+                            <!-- Replaced with the exact skill list provided -->
                             <span class="skill-item">C++</span>
                             <span class="skill-item">C#</span>
-                            <span class="skill-item">Unity</span>
+                            <span class="skill-item">Unreal Engine Blueprints</span>
+                            <span class="skill-item">GitHub</span>
                             <span class="skill-item">Unreal Engine</span>
-                            <span class="skill-item">Gameplay Programming</span>
-                            <span class="skill-item">AI Systems</span>
-                            <span class="skill-item">Physics Programming</span>
-                            <span class="skill-item">Multiplayer Networking</span>
-                            <span class="skill-item">Performance Optimization</span>
-                            <span class="skill-item">Tools Development</span>
-                            <span class="skill-item">Shader Programming</span>
-                            <span class="skill-item">Animation Systems</span>
+                            <span class="skill-item">Unity</span>
+                            <span class="skill-item">Trello</span>
+                            <span class="skill-item">Notion</span>
+                            <span class="skill-item">Discord</span>
+                            <span class="skill-item">Maya</span>
+                            <span class="skill-item">Blender</span>
+                            <span class="skill-item">Adobe Photoshop</span>
+                            <span class="skill-item">Adobe Illustrator</span>
+                            <span class="skill-item">Adobe After Effects</span>
+                            <span class="skill-item">Adobe Premiere Pro</span>
+                            <span class="skill-item">Sony Vegas Pro</span>
                         </div>
                     </div>
                 </div>
