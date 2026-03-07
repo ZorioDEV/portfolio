@@ -6,6 +6,38 @@
     <title>Tyler Bye | Gameplay Programmer</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;500&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+    <!-- Preload the main Turbo Town Thrash GIFs to avoid scroll jank -->
+    <link rel="preload" as="image" href="media/ttt/Overview_Loop.gif">
+    <link rel="preload" as="image" href="media/ttt/PWG_Blueprint.png">
+    <link rel="preload" as="image" href="media/ttt/Movement_Blueprint.png">
+    <link rel="preload" as="image" href="media/ttt/Shop_Blueprint.gif">
+    <link rel="preload" as="image" href="media/ttt/Magnet_Loop.gif">
+    <link rel="preload" as="image" href="media/ttt/JumpBoost_Loop.gif">
+    <link rel="preload" as="image" href="media/ttt/Clock_Loop.gif">
+    <link rel="preload" as="image" href="media/ttt/Star_Loop.gif">
+    <!-- Preload Fishodoro GIFs -->
+    <link rel="preload" as="image" href="media/fishodoro/Overview_Loop.gif">
+    <link rel="preload" as="image" href="media/fishodoro/Clock_Loop.gif">
+    <link rel="preload" as="image" href="media/fishodoro/ToDo_Loop.gif">
+    <link rel="preload" as="image" href="media/fishodoro/Shop_Loop.gif">
+    <link rel="preload" as="image" href="media/fishodoro/EditMode_Loop.gif">
+    <link rel="preload" as="image" href="media/fishodoro/Blocker_Loop.gif">
+    <!-- Preload The Trials of Loch GIFs and images -->
+    <link rel="preload" as="image" href="media/tol/Overview_Loop.gif">
+    <link rel="preload" as="image" href="media/tol/Player_Loop.gif">
+    <link rel="preload" as="image" href="media/tol/Health-Mana_Loop.gif">
+    <link rel="preload" as="image" href="media/tol/GodMode_Loop.gif">
+    <link rel="preload" as="image" href="media/tol/Wave_Loop.gif">
+    <link rel="preload" as="image" href="media/tol/TOL_G1.jpg">
+    <link rel="preload" as="image" href="media/tol/TOL_G2.jpg">
+    <link rel="preload" as="image" href="media/tol/TOL_G3.jpg">
+    <link rel="preload" as="image" href="media/tol/TOL_G4.jpg">
+    <link rel="preload" as="image" href="media/tol/TOL_T1.png">
+    <link rel="preload" as="image" href="media/tol/TOL_T2.png">
+    <link rel="preload" as="image" href="media/tol/TOL_T3.png">
+    <link rel="preload" as="image" href="media/tol/TOL_T4.png">
+    <link rel="preload" as="image" href="media/tol/TOL_Doc1.jpg">
+    <link rel="preload" as="image" href="media/tol/TOL_Doc2.jpg">
     <style>
         /* ===== RESET & BASE ===== */
         * {
@@ -495,6 +527,7 @@
         .thumbnail-content {
             width: 360px;
             height: 480px;
+            border: 1px solid var(--color-border);
             border-radius: 8px;
             overflow: hidden;
             position: relative;
@@ -510,6 +543,18 @@
         .project-thumbnail:hover .thumbnail-content {
             transform: scale(1.05);
             box-shadow: 0 25px 50px rgba(255, 255, 255, 0.1);
+        }
+        .thumbnail-content::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 8px; /* Match the thumbnail's border-radius */
+            box-shadow: inset 0 0 20px 10px rgba(0, 0, 0, 0.7); /* Inner black glow */
+            pointer-events: none; /* Allow clicks to pass through */
+            z-index: 1; /* Ensure the glow sits above the image but below the overlay */
         }
 
         .thumbnail-image {
@@ -943,6 +988,9 @@
             /* Hide scrollbar */
             scrollbar-width: none; /* Firefox */
             -ms-overflow-style: none; /* IE and Edge */
+
+            /* Performance: promote to its own layer */
+            will-change: transform;
         }
         .project-tab-content::-webkit-scrollbar {
             display: none; /* Chrome, Safari, Opera */
@@ -957,6 +1005,11 @@
             display: flex;
             gap: 50px;
             align-items: flex-start;
+        }
+        @media (min-width: 768px) {
+            .overview-layout {
+                align-items: center; /* vertically center description next to image on desktop */
+            }
         }
         @media (max-width: 767px) {
             .overview-layout {
@@ -1026,6 +1079,10 @@
             display: flex;
             gap: 40px;
             align-items: center;
+
+            /* Performance: skip rendering for off-screen items */
+            content-visibility: auto;
+            contain-intrinsic-size: 400px; /* approximate height, adjust if needed */
         }
         .contribution-item.reverse { flex-direction: row-reverse; }
         @media (max-width: 767px) {
@@ -1366,7 +1423,7 @@
                         <div class="profile-section">
                             <div class="profile-image-container">
                                 <!-- Replaced placeholder with actual profile image -->
-                                <img src="media/tjbye_pfp.png" alt="Tyler Bye" class="profile-image" style="width:100%; height:100%; object-fit:cover; border-radius:50%;" onerror="this.onerror=null; this.parentNode.innerHTML='<div class=\'profile-image-placeholder\'><i class=\'fas fa-user\'></i></div>';">
+                                <img src="media/tjbye_pfp.png" alt="Tyler Bye" class="profile-image" style="width:100%; height:100%; object-fit:cover; border-radius:50%;" onerror="this.onerror=null; this.parentNode.innerHTML='<div class=\\'profile-image-placeholder\\'><i class=\\'fas fa-user\\'></i></div>';">
                             </div>
                             <div class="profile-text">
                                 <!-- Updated name -->
@@ -1398,6 +1455,7 @@
                             <span class="skill-item">Unreal Engine</span>
                             <span class="skill-item">Unity</span>
                             <span class="skill-item">Trello</span>
+                            <span class="skill-item">Miro</span>
                             <span class="skill-item">Notion</span>
                             <span class="skill-item">Discord</span>
                             <span class="skill-item">Maya</span>
@@ -1473,42 +1531,127 @@
         const projects = [
             {
                 id: 1,
-                name: "Whispering Woods",
-                role: "Gameplay Programmer",
-                description: "A fantasy adventure game with dynamic AI ecosystems and physics-based interaction systems. Players explore a living forest where every creature has unique behaviors that respond to environmental changes and player actions.",
-                date: "Spring 2023",
-                tech: ["Unity", "C#", "AI Behavior Trees", "Physics System", "Shader Graph", "Animation Rigging"],
-                contributionText1: "Implemented the core AI ecosystem where creatures interact with each other and the environment. Developed the physics-based interaction system for puzzles and combat. Created custom tools for designers to tweak creature behaviors in real-time.",
-                contributionText2: "Optimized AI calculations to maintain 60 FPS with 50+ active NPCs. Implemented a dynamic LOD system that reduced CPU usage by 40%. Created visual debugging tools that helped the design team iterate 3x faster.",
-                overviewGif: "fa-tree",
-                contributionImages: ["fa-code-branch", "fa-robot"],
-                galleryImages: ["fa-image1", "fa-image2", "fa-image3", "fa-image4", "fa-image5", "fa-image6"]
+                name: "Fishodoro",
+                role: "Software Engineer",
+                description: "Fishodoro is a gamified study tool based on the Pomodoro study technique to help users be more productive and healthy with their study techniques. In addition to the timer, the app features helpful tools like a to-do list to keep users on track, and as users check tasks off their to-do list, they gain coins that they can use to customize their very own calming study environment; a fish pond! Made in Unity (C#) and includes a number of plugins for animations and database functionality. Developed over a 9-month period through MAGIC Spell Studios at RIT.",
+                date: "April 2025 - December 2025",
+                tech: ["Unity", "C#", "GitHub", "Trello", "Discord", "SupaBase", "DOTween", "UI Systems", "Shop/Inventory Systems", "Customization Systems", "Task Management Systems", "Packaging/Deployment"],
+                // Fishodoro asset paths
+                overviewGifPath: "media/fishodoro/Overview_Loop.gif",
+                contributionItems: [
+                    {
+                        imagePath: "media/fishodoro/Clock_Loop.gif",
+                        text: "Clock Power‑Up – Grants double coins for a limited time, visualized with a floating clock animation and particle effects."
+                    },
+                    {
+                        imagePath: "media/fishodoro/ToDo_Loop.gif",
+                        text: "To‑Do List System – Fully functional task manager that rewards coins when tasks are checked off. Integrated with the game's save system."
+                    },
+                    {
+                        imagePath: "media/fishodoro/Shop_Loop.gif",
+                        text: "In‑Game Shop – Allows players to spend coins on fish, decorations, and backgrounds. Purchases immediately update the pond environment."
+                    },
+                    {
+                        imagePath: "media/fishodoro/EditMode_Loop.gif",
+                        text: "Edit Mode – Drag‑and‑drop placement of fish and decorations. Built with Unity’s UI system and includes grid snapping."
+                    },
+                    {
+                        imagePath: "media/fishodoro/Blocker_Loop.gif",
+                        text: "Blocker Power‑Up – Temporarily blocks distracting websites when the study timer is active. Implemented using native browser APIs for the WebGL build."
+                    }
+                ],
+                galleryImagePaths: [
+                    "media/fishodoro/Fish_G1.jpg",
+                    "media/fishodoro/Fish_G2.jpg",
+                    "media/fishodoro/Fish_G3.jpg",
+                    "media/fishodoro/Fish_G4.jpg",
+                    "media/fishodoro/Fish_G5.jpg",
+                    "media/fishodoro/Fish_G6.jpg",
+                    "media/fishodoro/Fish_L1.png",
+                    "media/fishodoro/Fish_L2.png",
+                    "media/fishodoro/Fish_L3.png",
+                    "media/fishodoro/Fish_L4.png",
+                    "media/fishodoro/Fish_F1.gif",
+                    "media/fishodoro/Fish_F2.gif",
+                    "media/fishodoro/Fish_F3.gif",
+                    "media/fishodoro/Fish_Doc1.png",
+                    "media/fishodoro/Fish_Doc2.png",
+                    "media/fishodoro/Fish_Doc3.png",
+                    "media/fishodoro/Fish_P1.jpg",
+                    "media/fishodoro/Fish_P2.jpg",
+                    "media/fishodoro/Fish_P3.jpg",
+                    "media/fishodoro/Fish_P4.jpg",
+                    "media/fishodoro/Fish_P5.jpg"
+                ]
             },
             {
                 id: 2,
-                name: "Nebula Drifter",
-                role: "Systems Programmer",
-                description: "A space exploration roguelike with procedural generation and modular ship customization. Features dynamically generated star systems, evolving alien civilizations, and deep ship upgrade systems.",
-                date: "Winter 2022",
-                tech: ["Unreal Engine", "C++", "Procedural Generation", "UI Systems", "Save/Load", "Networking"],
-                contributionText1: "Built the procedural star system generator and ship module system. Implemented the save/load architecture for persistent progression across playthroughs. Created the real-time multiplayer networking layer for cooperative play.",
-                contributionText2: "Developed a custom node-based tool for designers to create ship modules without coding. Optimized memory usage for generated content, reducing load times by 60%. Implemented predictive networking to reduce perceived latency by 80%.",
-                overviewGif: "fa-rocket",
-                contributionImages: ["fa-ship", "fa-network-wired"],
-                galleryImages: ["fa-star", "fa-galaxy", "fa-planet", "fa-satellite", "fa-ufo", "fa-meteor"]
+                name: "Turbo Town Thrash",
+                role: "Gameplay Programmer",
+                description: "Turbo Town Thrash is a fast-paced endless runner mobile game made in Unreal Engine 5 (Blueprinting). You control a hover go-kart through a busy city street for as long as you possibly can. Beat your high score and collect the coins to unlock all the skins. Developed for my high school \"Senior Project\" to learn both UE5 and Blender. Being on the Google Play Store, this was my first project to go from start to published.",
+                date: "November 2023 - June 2024",
+                tech: ["Unreal Engine", "Unreal Engine Blueprints", "Blender", "Niagara VFX", "Materials/Shaders", "UI Systems", "Physics Systems", "Audio System", "Procedural Generation", "Ability System", "Player Controller", "Shop/Inventory Systems", "Packaging/Deployment"],
+                // New paths for Turbo Town Thrash
+                overviewGifPath: "media/ttt/Overview_Loop.gif",
+                contributionItems: [
+                    { imagePath: "media/ttt/PWG_Blueprint.png", text: "Procedural World Generation – Blueprint system that dynamically generates the endless city layout." },
+                    { imagePath: "media/ttt/Movement_Blueprint.png", text: "Movement System – Blueprint for hover kart physics, including acceleration, steering, and collision." },
+                    { imagePath: "media/ttt/Shop_Blueprint.png", text: "Shop System – Blueprint managing in-game currency, unlockable skins, and player progression." },
+                    { imagePath: "media/ttt/Magnet_Loop.gif", text: "Magnet Power‑Up – Attracts nearby coins for a limited time, visualized with particle effects." },
+                    { imagePath: "media/ttt/JumpBoost_Loop.gif", text: "Jump Boost Power‑Up – Launches the kart into the air, enabling shortcuts and avoiding obstacles." },
+                    { imagePath: "media/ttt/Clock_Loop.gif", text: "Clock Power‑Up – Slows down time, making it easier to dodge oncoming traffic." },
+                    { imagePath: "media/ttt/Star_Loop.gif", text: "Star Power‑Up – Grants temporary invincibility and increases speed, with a star trail effect." }
+                ],
+                galleryImagePaths: [
+                    "media/ttt/TTT_G1.jpg",
+                    "media/ttt/TTT_G2.jpg",
+                    "media/ttt/TTT_G3.jpg",
+                    "media/ttt/TTT_G4.jpg",
+                    "media/ttt/TTT_G5.jpg",
+                    "media/ttt/TTT_G6.jpg",
+                    "media/ttt/TTT_G7.jpg",
+                    "media/ttt/TTT_G8.jpg",
+                    "media/ttt/TTT_Blender1.png",
+                    "media/ttt/TTT_Blender2.png",
+                    "media/ttt/TTT_Blender3.png",
+                    "media/ttt/TTT_Blender4.png",
+                    "media/ttt/TTT_Blender5.png",
+                    "media/ttt/TTT_Blender6.png",
+                    "media/ttt/TTT_Blender7.png",
+                    "media/ttt/TTT_Blender8.png",
+                    "media/ttt/TTT_Blender9.png",
+                    "media/ttt/TTT_Doc1.png",
+                    "media/ttt/TTT_Doc2.png",
+                    "media/ttt/TTT_Doc3.png"
+                ]
             },
             {
                 id: 3,
-                name: "Chrono Clash",
-                role: "Gameplay & AI Programmer",
-                description: "A time-manipulation combat game where players rewind and fast-forward actions in tactical battles. Features a unique timeline-based combat system where positioning and timing create complex strategic possibilities.",
-                date: "Fall 2022",
-                tech: ["Unity", "C#", "Time Manipulation", "Combat System", "Network Code", "Shader Programming"],
-                contributionText1: "Created the time rewind/fast-forward system and sync logic for multiplayer. Designed the combo-based combat mechanics with branching skill trees. Implemented the visual effects system for time manipulation abilities.",
-                contributionText2: "Implemented a replay system that records and plays back matches with full rewind capability. Created visual debugging tools for time states that helped identify synchronization issues. Developed a custom shader system for temporal distortion effects.",
-                overviewGif: "fa-clock",
-                contributionImages: ["fa-fighter-jet", "fa-shield"],
-                galleryImages: ["fa-hourglass", "fa-stopwatch", "fa-bolt", "fa-dragon", "fa-magic", "fa-skull"]
+                name: "The Trials of Loch",
+                role: "Gameplay Programmer",
+                description: "The Trials of Loch is a top-down story-based shooter made in MonoGame (C#), where the novice wizard named Loch Morlin must complete his final exam by escaping a series of treacherous dungeons. There are four stages/waves: Orcs - Heavy Melee, Undeads - Light Melee, Demons - Range (Spit/Orbs), and Boss Fight (Teacher). Developed during RIT’s IGME 106 course and was the final group project.",
+                date: "March 2025 - May 2025",
+                tech: ["MonoGame", "C#", "GitHub", "Discord", "Miro", "Grid-Based World Systems", "UI Systems", "Enemy AI Systems", "Combat Systems", "Player Controller", "Level Design"],
+                // Trials of Loch asset paths
+                overviewGifPath: "media/tol/Overview_Loop.gif",
+                contributionItems: [
+                    { imagePath: "media/tol/Player_Loop.gif", text: "Player movement and combat – Implemented responsive controls, attack mechanics, and spell casting." },
+                    { imagePath: "media/tol/Health-Mana_Loop.gif", text: "Health and Mana system – UI integration, resource management, and potion usage." },
+                    { imagePath: "media/tol/GodMode_Loop.gif", text: "God Mode debug tool – Toggle invincibility for testing, with visual feedback and developer shortcuts." },
+                    { imagePath: "media/tol/Wave_Loop.gif", text: "Wave-based enemy spawning – Dynamic difficulty scaling and spawn patterns for each enemy type." }
+                ],
+                galleryImagePaths: [
+                    "media/tol/TOL_G1.jpg",
+                    "media/tol/TOL_G2.jpg",
+                    "media/tol/TOL_G3.jpg",
+                    "media/tol/TOL_G4.jpg",
+                    "media/tol/TOL_T1.png",
+                    "media/tol/TOL_T2.png",
+                    "media/tol/TOL_T3.png",
+                    "media/tol/TOL_T4.png",
+                    "media/tol/TOL_Doc1.jpg",
+                    "media/tol/TOL_Doc2.jpg"
+                ]
             }
         ];
 
@@ -1590,20 +1733,55 @@
             thumbnail.className = 'project-thumbnail';
             thumbnail.dataset.index = index;
             thumbnail.dataset.projectIndex = index;
-            // Silver/grey shades for thumbnails
+                
+            // Silver/grey shades for fallback thumbnails
             const greys = ['#808080', '#a0a0a0', '#c0c0c0'];
             const color = greys[index % 3];
-            thumbnail.innerHTML = `
-                <div class="thumbnail-content">
-                    <div class="thumbnail-image" style="background: linear-gradient(45deg, ${color}30, ${color}10); display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-gamepad" style="font-size: 5rem; color: ${color}; opacity: 0.7;"></i>
-                    </div>
-                    <div class="thumbnail-overlay">
-                        <div class="thumbnail-title">${project.name}</div>
-                        <div class="thumbnail-role">${project.role}</div>
-                    </div>
-                </div>
+                
+            // Create the thumbnail content container
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'thumbnail-content';
+                
+            // Create the image container
+            const imageDiv = document.createElement('div');
+            imageDiv.className = 'thumbnail-image';
+                
+            // Determine the image path based on project name
+            let imagePath = '';
+            if (project.name === "Fishodoro") {
+                imagePath = "media/fishodoro/Fishodoro_Banner.png";
+            } else if (project.name === "Turbo Town Thrash") {
+                imagePath = "media/ttt/TTT_Banner.png";
+            } else if (project.name === "The Trials of Loch") {
+                imagePath = "media/tol/TOL_Banner.png";
+            }
+        
+            if (imagePath) {
+                // Use the actual image
+                imageDiv.style.background = 'none';
+                imageDiv.style.display = 'block';
+                imageDiv.innerHTML = `<img src="${imagePath}" alt="${project.name}" style="width:100%; height:100%; object-fit:cover;" onerror="this.onerror=null; this.parentNode.innerHTML='<i class=\\'fas fa-gamepad\\' style=\\'font-size:5rem; color:${color}; opacity:0.7;\\'></i>';">`;
+            } else {
+                // Placeholder with icon and gradient (for any future projects)
+                imageDiv.style.background = `linear-gradient(45deg, ${color}30, ${color}10)`;
+                imageDiv.style.display = 'flex';
+                imageDiv.style.alignItems = 'center';
+                imageDiv.style.justifyContent = 'center';
+                imageDiv.innerHTML = `<i class="fas fa-gamepad" style="font-size: 5rem; color: ${color}; opacity: 0.7;"></i>`;
+            }
+        
+            // Overlay with title and role
+            const overlayDiv = document.createElement('div');
+            overlayDiv.className = 'thumbnail-overlay';
+            overlayDiv.innerHTML = `
+                <div class="thumbnail-title">${project.name}</div>
+                <div class="thumbnail-role">${project.role}</div>
             `;
+        
+            contentDiv.appendChild(imageDiv);
+            contentDiv.appendChild(overlayDiv);
+            thumbnail.appendChild(contentDiv);
+        
             return thumbnail;
         }
 
@@ -1643,12 +1821,34 @@
 
         function updateProjectDetailContent(projectIndex) {
             const project = projects[projectIndex];
-            // REMOVED DATE FROM TITLE
             document.querySelector('.project-detail-title').textContent = `${project.name}`;
             
             // Overview
-            const overviewGifDiv = document.querySelector('#overview-tab .overview-gif .gif-placeholder');
-            overviewGifDiv.innerHTML = `<i class="fas ${project.overviewGif}"></i><div>${project.name} Gameplay</div>`;
+            const overviewGifDiv = document.querySelector('#overview-tab .overview-gif');
+            overviewGifDiv.innerHTML = ''; // Clear
+            if (project.overviewGifPath) {
+                const img = document.createElement('img');
+                img.src = project.overviewGifPath;
+                img.alt = `${project.name} Overview`;
+                img.style.width = '100%';
+                img.style.height = '100%';
+                img.style.objectFit = 'contain';
+                // Performance: lazy load + async decode
+                img.loading = 'lazy';
+                img.decoding = 'async';
+                img.onerror = function() {
+                    this.onerror = null;
+                    this.style.display = 'none';
+                    const fallback = document.createElement('div');
+                    fallback.className = 'gif-placeholder';
+                    fallback.innerHTML = `<i class="fas ${project.overviewGif || 'fa-play-circle'}"></i><div>${project.name} Gameplay</div>`;
+                    overviewGifDiv.appendChild(fallback);
+                };
+                overviewGifDiv.appendChild(img);
+            } else {
+                overviewGifDiv.innerHTML = `<div class="gif-placeholder"><i class="fas ${project.overviewGif}"></i><div>${project.name} Gameplay</div></div>`;
+            }
+            
             document.querySelector('#overview-tab .overview-description').textContent = project.description;
             const techStack = document.querySelector('#overview-tab .tech-stack');
             techStack.innerHTML = '';
@@ -1660,53 +1860,143 @@
             });
 
             // Contribution
-            const contributionImages = document.querySelectorAll('#contribution-tab .contribution-image .gif-placeholder');
-            contributionImages[0].innerHTML = `<i class="fas ${project.contributionImages[0]}"></i><div>Contribution: AI System</div>`;
-            contributionImages[1].innerHTML = `<i class="fas ${project.contributionImages[1]}"></i><div>Contribution: Optimization</div>`;
-            const contributionTextPs = document.querySelectorAll('#contribution-tab .contribution-text p');
-            contributionTextPs[0].textContent = project.contributionText1;
-            contributionTextPs[1].textContent = project.contributionText2;
+            const contributionLayout = document.querySelector('#contribution-tab .contribution-layout');
+            contributionLayout.innerHTML = '';
+            if (project.contributionItems && project.contributionItems.length > 0) {
+                project.contributionItems.forEach((item, idx) => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'contribution-item';
+                    if (idx % 2 === 1) itemDiv.classList.add('reverse'); // alternate
+
+                    // Image container
+                    const imageDiv = document.createElement('div');
+                    imageDiv.className = 'contribution-image';
+                    const img = document.createElement('img');
+                    img.src = item.imagePath;
+                    img.alt = `Contribution ${idx+1}`;
+                    img.style.width = '100%';
+                    img.style.height = '100%';
+                    img.style.objectFit = 'contain';
+                    // Performance: lazy load + async decode
+                    img.loading = 'lazy';
+                    img.decoding = 'async';
+                    img.onerror = function() {
+                        this.onerror = null;
+                        this.style.display = 'none';
+                        const fallback = document.createElement('div');
+                        fallback.className = 'gif-placeholder';
+                        fallback.innerHTML = `<i class="fas ${project.contributionImages ? project.contributionImages[idx % project.contributionImages.length] : 'fa-code'}"></i><div>Contribution ${idx+1}</div>`;
+                        imageDiv.appendChild(fallback);
+                    };
+                    imageDiv.appendChild(img);
+
+                    // Text container
+                    const textDiv = document.createElement('div');
+                    textDiv.className = 'contribution-text';
+                    const p = document.createElement('p');
+                    p.textContent = item.text;
+                    textDiv.appendChild(p);
+
+                    itemDiv.appendChild(imageDiv);
+                    itemDiv.appendChild(textDiv);
+                    contributionLayout.appendChild(itemDiv);
+                });
+            } else {
+                // Fallback to old two-item layout
+                // Create two items using the old data
+                for (let i = 0; i < 2; i++) {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'contribution-item';
+                    if (i === 1) itemDiv.classList.add('reverse');
+
+                    const imageDiv = document.createElement('div');
+                    imageDiv.className = 'contribution-image';
+                    const fallback = document.createElement('div');
+                    fallback.className = 'gif-placeholder';
+                    fallback.innerHTML = `<i class="fas ${project.contributionImages[i]}"></i><div>Contribution: ${i === 0 ? 'AI System' : 'Optimization'}</div>`;
+                    imageDiv.appendChild(fallback);
+
+                    const textDiv = document.createElement('div');
+                    textDiv.className = 'contribution-text';
+                    const p = document.createElement('p');
+                    p.textContent = i === 0 ? project.contributionText1 : project.contributionText2;
+                    textDiv.appendChild(p);
+
+                    itemDiv.appendChild(imageDiv);
+                    itemDiv.appendChild(textDiv);
+                    contributionLayout.appendChild(itemDiv);
+                }
+            }
 
             // Gallery
             const galleryGrid = document.querySelector('#gallery-tab .gallery-grid');
             galleryGrid.innerHTML = '';
-            project.galleryImages.forEach((icon, idx) => {
-                const item = document.createElement('div');
-                item.className = 'gallery-item';
-                item.innerHTML = `
-                    <div class="gallery-placeholder">
-                        <i class="fas ${icon}" style="font-size: 3rem; margin-bottom: 10px; color: #ccc;"></i>
-                        <span style="font-size: 0.9rem; color: #aaa;">Screenshot ${idx+1}</span>
-                    </div>
-                `;
-                item.addEventListener('click', () => { openLightbox(icon, `Screenshot ${idx+1}`); });
-                galleryGrid.appendChild(item);
-            });
+            if (project.galleryImagePaths && project.galleryImagePaths.length > 0) {
+                project.galleryImagePaths.forEach((path, idx) => {
+                    const item = document.createElement('div');
+                    item.className = 'gallery-item';
+                    const img = document.createElement('img');
+                    img.src = path;
+                    img.alt = `Gallery ${idx+1}`;
+                    img.className = 'gallery-image';
+                    img.style.width = '100%';
+                    img.style.height = '100%';
+                    img.style.objectFit = 'cover';
+                    // Performance: lazy load + async decode
+                    img.loading = 'lazy';
+                    img.decoding = 'async';
+                    img.onerror = function() {
+                        this.onerror = null;
+                        this.style.display = 'none';
+                        const placeholder = document.createElement('div');
+                        placeholder.className = 'gallery-placeholder';
+                        placeholder.innerHTML = `<i class="fas ${project.galleryImages ? project.galleryImages[idx % project.galleryImages.length] : 'fa-image'}" style="font-size: 3rem; color: #ccc;"></i><span style="font-size: 0.9rem; color: #aaa;">Image ${idx+1}</span>`;
+                        item.appendChild(placeholder);
+                    };
+                    item.appendChild(img);
+                    item.addEventListener('click', () => { openLightbox(path, `Gallery ${idx+1}`); });
+                    galleryGrid.appendChild(item);
+                });
+            } else {
+                // Fallback to old icon gallery
+                project.galleryImages.forEach((icon, idx) => {
+                    const item = document.createElement('div');
+                    item.className = 'gallery-item';
+                    item.innerHTML = `
+                        <div class="gallery-placeholder">
+                            <i class="fas ${icon}" style="font-size: 3rem; margin-bottom: 10px; color: #ccc;"></i>
+                            <span style="font-size: 0.9rem; color: #aaa;">Screenshot ${idx+1}</span>
+                        </div>
+                    `;
+                    item.addEventListener('click', () => { openLightbox(icon, `Screenshot ${idx+1}`); });
+                    galleryGrid.appendChild(item);
+                });
+            }
 
-            // Reset scroll positions for all tabs after content update
             resetTabScrolls();
-            
-            // Double-check after a tiny delay to ensure DOM is fully updated
             setTimeout(resetTabScrolls, 10);
         }
 
         // ==================== LIGHTBOX ====================
-        function openLightbox(icon, alt) {
-            lightboxImage.src = '';
+        function openLightbox(src, alt) {
+            lightboxImage.src = src;
             lightboxImage.alt = alt;
-            lightboxImage.style.background = `linear-gradient(45deg, #3a3a3a, #7a7a7a)`;
-            lightboxImage.style.padding = '50px';
-            lightboxImage.style.display = 'flex';
-            lightboxImage.style.alignItems = 'center';
-            lightboxImage.style.justifyContent = 'center';
-            lightboxImage.style.fontSize = '8rem';
-            lightboxImage.style.color = 'white';
-            lightboxImage.innerHTML = `<i class="fas ${icon}"></i>`;
+            // Remove any inline styles that might interfere
+            lightboxImage.style.background = 'none';
+            lightboxImage.style.padding = '0';
+            lightboxImage.style.display = 'block';
+            lightboxImage.style.width = 'auto';
+            lightboxImage.style.height = 'auto';
+            lightboxImage.style.maxWidth = '90%';
+            lightboxImage.style.maxHeight = '85%';
+            lightboxImage.style.objectFit = 'contain';
+            lightboxImage.innerHTML = ''; // clear any inner content
             lightboxOverlay.classList.add('active');
         }
 
         function closeLightbox() {
             lightboxOverlay.classList.remove('active');
+            lightboxImage.src = '';
             lightboxImage.innerHTML = '';
         }
 
