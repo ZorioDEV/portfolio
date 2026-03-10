@@ -27,7 +27,6 @@
     <link rel="preload" as="image" href="media/tol/Player_Loop.gif">
     <link rel="preload" as="image" href="media/tol/Health-Mana_Loop.gif">
     <link rel="preload" as="image" href="media/tol/GodMode_Loop.gif">
-    <link rel="preload" as="image" href="media/tol/Wave_Loop.gif">
     <link rel="preload" as="image" href="media/tol/TOL_G1.jpg">
     <link rel="preload" as="image" href="media/tol/TOL_G2.jpg">
     <link rel="preload" as="image" href="media/tol/TOL_G3.jpg">
@@ -1003,24 +1002,28 @@
         /* ----- OVERVIEW TAB ----- */
         .overview-layout {
             display: flex;
+            flex-direction: column;
             gap: 50px;
-            align-items: flex-start;
         }
+        /* Desktop: grid with two columns, image & button in left, info in right */
         @media (min-width: 768px) {
             .overview-layout {
-                align-items: center; /* vertically center description next to image on desktop */
-            }
-        }
-        @media (max-width: 767px) {
-            .overview-layout {
-                flex-direction: column;
-                gap: 30px;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 50px;
+                align-items: start;
             }
         }
 
+        .overview-left {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            width: 100%;
+        }
+
         .overview-gif {
-            flex: 1;
-            min-width: 300px;
+            width: 100%;
             border-radius: 8px;
             overflow: hidden;
             background-color: var(--color-bg-medium);
@@ -1030,26 +1033,49 @@
             align-items: center;
             justify-content: center;
         }
-        @media (max-width: 767px) {
-            .overview-gif {
-                width: 100% !important;
-                aspect-ratio: auto !important;
-                min-height: 250px;
-                flex: none;
-            }
-        }
 
         .overview-info {
-            flex: 1;
             display: flex;
             flex-direction: column;
             gap: 30px;
+            width: 100%;
         }
 
         .overview-description {
             line-height: 1.7;
             color: var(--color-text-muted);
             font-size: 1.2rem;
+        }
+
+        /* ----- EXTERNAL LINK BUTTON (inverted colors + extra icon spacing) ----- */
+        .external-link-btn {
+            display: inline-block;
+            background-color: #b4b4b4;
+            border: 1px solid #ffffff;
+            color: #0a0a0a;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-family: var(--font-accent);
+            font-size: 1rem;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            transition: all var(--transition-medium) Fease;
+            backdrop-filter: blur(5px);
+            text-decoration: none;
+            margin-top: 0;
+        }
+        .external-link-btn i {
+            margin-right: 12px;                        /* extra space between icon and text */
+        }
+        .external-link-btn:hover {
+            background-color: #f0f0f0;
+            color: #000000;
+            border-color: #cccccc;
+            transform: scale(1.05);
+        }
+
+        .project-external-link {
+            width: 100%;
         }
 
         .tech-stack {
@@ -1066,6 +1092,14 @@
             border-radius: 25px;
             font-size: 1rem;
             border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        /* Mobile tech tags match about page skill items */
+        @media (max-width: 767px) {
+            .tech-tag {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+            }
         }
 
         /* ----- CONTRIBUTION TAB ----- */
@@ -1127,6 +1161,14 @@
             grid-template-columns: repeat(3, 1fr);
             gap: 20px;
         }
+
+        /* Desktop: 4 columns */
+        @media (min-width: 1024px) {
+            .gallery-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
         @media (max-width: 767px) {
             .gallery-grid {
                 display: flex;
@@ -1487,31 +1529,13 @@
             </div>
             <!-- Tab contents – each now individually scrollable -->
             <div class="project-tab-contents">
-                <!-- OVERVIEW -->
+                <!-- OVERVIEW (structure will be built by JS) -->
                 <div class="project-tab-content active" id="overview-tab">
-                    <div class="overview-layout">
-                        <div class="overview-gif"><div class="gif-placeholder"><i class="fas fa-play-circle"></i><div>Gameplay GIF</div></div></div>
-                        <div class="overview-info">
-                            <p class="overview-description">Project summary goes here.</p>
-                            <div>
-                                <h3 style="font-family: var(--font-accent); font-size: 1.5rem; font-weight: 300; letter-spacing: 2px; color: var(--color-text-light); margin-bottom: 15px;">TECH STACK</h3>
-                                <div class="tech-stack"></div>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="overview-layout"></div>
                 </div>
                 <!-- CONTRIBUTION -->
                 <div class="project-tab-content" id="contribution-tab">
-                    <div class="contribution-layout">
-                        <div class="contribution-item">
-                            <div class="contribution-image"><div class="gif-placeholder"><i class="fas fa-code"></i><div>Contribution GIF 1</div></div></div>
-                            <div class="contribution-text"><p>First contribution text block.</p></div>
-                        </div>
-                        <div class="contribution-item reverse">
-                            <div class="contribution-image"><div class="gif-placeholder"><i class="fas fa-cogs"></i><div>Contribution GIF 2</div></div></div>
-                            <div class="contribution-text"><p>Second contribution text block.</p></div>
-                        </div>
-                    </div>
+                    <div class="contribution-layout"></div>
                 </div>
                 <!-- GALLERY -->
                 <div class="project-tab-content" id="gallery-tab">
@@ -1536,51 +1560,20 @@
                 description: "Fishodoro is a gamified study tool based on the Pomodoro study technique to help users be more productive and healthy with their study techniques. In addition to the timer, the app features helpful tools like a to-do list to keep users on track, and as users check tasks off their to-do list, they gain coins that they can use to customize their very own calming study environment; a fish pond! Made in Unity (C#) and includes a number of plugins for animations and database functionality. Developed over a 9-month period through MAGIC Spell Studios at RIT.",
                 date: "April 2025 - December 2025",
                 tech: ["Unity", "C#", "GitHub", "Trello", "Discord", "SupaBase", "DOTween", "UI Systems", "Shop/Inventory Systems", "Customization Systems", "Task Management Systems", "Packaging/Deployment"],
-                // Fishodoro asset paths
                 overviewGifPath: "media/fishodoro/Overview_Loop.gif",
                 contributionItems: [
-                    {
-                        imagePath: "media/fishodoro/Clock_Loop.gif",
-                        text: "Clock Power‑Up – Grants double coins for a limited time, visualized with a floating clock animation and particle effects."
-                    },
-                    {
-                        imagePath: "media/fishodoro/ToDo_Loop.gif",
-                        text: "To‑Do List System – Fully functional task manager that rewards coins when tasks are checked off. Integrated with the game's save system."
-                    },
-                    {
-                        imagePath: "media/fishodoro/Shop_Loop.gif",
-                        text: "In‑Game Shop – Allows players to spend coins on fish, decorations, and backgrounds. Purchases immediately update the pond environment."
-                    },
-                    {
-                        imagePath: "media/fishodoro/EditMode_Loop.gif",
-                        text: "Edit Mode – Drag‑and‑drop placement of fish and decorations. Built with Unity’s UI system and includes grid snapping."
-                    },
-                    {
-                        imagePath: "media/fishodoro/Blocker_Loop.gif",
-                        text: "Blocker Power‑Up – Temporarily blocks distracting websites when the study timer is active. Implemented using native browser APIs for the WebGL build."
-                    }
+                    { imagePath: "media/fishodoro/Clock_Loop.gif", text: "Pomodoro Timer - Keeps track of the user's study and break sessions through the Pomodoro study technique. Settings allow for additional customization, while the timer itself has pause, reset, and skip options. The reward system also grants 3 coins per minute of completed study time." },
+                    { imagePath: "media/fishodoro/ToDo_Loop.gif", text: "To-Do List - Manages a task management system allowing users to create, sort, complete, and delete tasks. The reward system includes a daily reward structure granting 10 coins for the first five completed tasks and 3 coins for subsequent tasks." },
+                    { imagePath: "media/fishodoro/Shop_Loop.gif", text: "Shop/Inventory System - Includes a shop and inventory system that supports purchasing and collecting decorative items with filter-based browsing. Handles purchase validation and maintains persistent inventory storage." },
+                    { imagePath: "media/fishodoro/EditMode_Loop.gif", text: "Edit Mode System - Handles all components of world decoration customization, enabling users to manipulate placed items through horizontal flipping, scaling up/down, layer reordering forward/backwards, repositioning, and storing items back into the inventory." },
+                    { imagePath: "media/fishodoro/Blocker_Loop.gif", text: "Blockers & Anti-Spam - Ensures UI interaction safeguards, including menu blockers to prevent unwanted background UI activation and cooldown-based anti-spam protection for database processes. All UI elements are within the 'SafeArea' constraints for compatibility across mobile devices, which checks for camera or wedge overlap." }
                 ],
                 galleryImagePaths: [
-                    "media/fishodoro/Fish_G1.jpg",
-                    "media/fishodoro/Fish_G2.jpg",
-                    "media/fishodoro/Fish_G3.jpg",
-                    "media/fishodoro/Fish_G4.jpg",
-                    "media/fishodoro/Fish_G5.jpg",
-                    "media/fishodoro/Fish_G6.jpg",
-                    "media/fishodoro/Fish_L1.png",
-                    "media/fishodoro/Fish_L2.png",
-                    "media/fishodoro/Fish_L3.png",
-                    "media/fishodoro/Fish_L4.png",
-                    "media/fishodoro/Fish_F1.gif",
-                    "media/fishodoro/Fish_F2.gif",
-                    "media/fishodoro/Fish_F3.gif",
-                    "media/fishodoro/Fish_Doc1.png",
-                    "media/fishodoro/Fish_Doc2.png",
-                    "media/fishodoro/Fish_Doc3.png",
-                    "media/fishodoro/Fish_P1.jpg",
-                    "media/fishodoro/Fish_P2.jpg",
-                    "media/fishodoro/Fish_P3.jpg",
-                    "media/fishodoro/Fish_P4.jpg",
+                    "media/fishodoro/Fish_G1.jpg", "media/fishodoro/Fish_G2.jpg", "media/fishodoro/Fish_G3.jpg", "media/fishodoro/Fish_G4.jpg",
+                    "media/fishodoro/Fish_G5.jpg", "media/fishodoro/Fish_G6.jpg", "media/fishodoro/Fish_L1.png", "media/fishodoro/Fish_L2.png",
+                    "media/fishodoro/Fish_L3.png", "media/fishodoro/Fish_L4.png", "media/fishodoro/Fish_F1.gif", "media/fishodoro/Fish_F2.gif",
+                    "media/fishodoro/Fish_F3.gif", "media/fishodoro/Fish_Doc1.png", "media/fishodoro/Fish_Doc2.png", "media/fishodoro/Fish_Doc3.png",
+                    "media/fishodoro/Fish_P1.jpg", "media/fishodoro/Fish_P2.jpg", "media/fishodoro/Fish_P3.jpg", "media/fishodoro/Fish_P4.jpg",
                     "media/fishodoro/Fish_P5.jpg"
                 ]
             },
@@ -1591,38 +1584,22 @@
                 description: "Turbo Town Thrash is a fast-paced endless runner mobile game made in Unreal Engine 5 (Blueprinting). You control a hover go-kart through a busy city street for as long as you possibly can. Beat your high score and collect the coins to unlock all the skins. Developed for my high school \"Senior Project\" to learn both UE5 and Blender. Being on the Google Play Store, this was my first project to go from start to published.",
                 date: "November 2023 - June 2024",
                 tech: ["Unreal Engine", "Unreal Engine Blueprints", "Blender", "Niagara VFX", "Materials/Shaders", "UI Systems", "Physics Systems", "Audio System", "Procedural Generation", "Ability System", "Player Controller", "Shop/Inventory Systems", "Packaging/Deployment"],
-                // New paths for Turbo Town Thrash
                 overviewGifPath: "media/ttt/Overview_Loop.gif",
                 contributionItems: [
-                    { imagePath: "media/ttt/PWG_Blueprint.png", text: "Procedural World Generation – Blueprint system that dynamically generates the endless city layout." },
-                    { imagePath: "media/ttt/Movement_Blueprint.png", text: "Movement System – Blueprint for hover kart physics, including acceleration, steering, and collision." },
-                    { imagePath: "media/ttt/Shop_Blueprint.png", text: "Shop System – Blueprint managing in-game currency, unlockable skins, and player progression." },
-                    { imagePath: "media/ttt/Magnet_Loop.gif", text: "Magnet Power‑Up – Attracts nearby coins for a limited time, visualized with particle effects." },
-                    { imagePath: "media/ttt/JumpBoost_Loop.gif", text: "Jump Boost Power‑Up – Launches the kart into the air, enabling shortcuts and avoiding obstacles." },
-                    { imagePath: "media/ttt/Clock_Loop.gif", text: "Clock Power‑Up – Slows down time, making it easier to dodge oncoming traffic." },
-                    { imagePath: "media/ttt/Star_Loop.gif", text: "Star Power‑Up – Grants temporary invincibility and increases speed, with a star trail effect." }
+                    { imagePath: "media/ttt/PWG_Blueprint.png", text: "Procedural World Generation - Uses a multi-stage randomized FIFO tile system that continuously generates an endless environment of road segments, buildings, and gameplay obstacles at runtime." },
+                    { imagePath: "media/ttt/Movement_Blueprint.png", text: "Movement System & Physics Animations - Handles a mobile touch/swipe input system supporting 3-lane character movement. Player animations are driven by physics-influenced tilting and reactive motion to enhance responsiveness and visual feedback." },
+                    { imagePath: "media/ttt/Shop_Blueprint.png", text: "Shop/Inventory System - Includes a persistent shop and inventory system that tracks in-game currency, manages unlockable cosmetic skins, and saves player progression while ensuring consistent purchase validation and selection state." },
+                    { imagePath: "media/ttt/Magnet_Loop.gif", text: "Magnet Ability - Attracts all nearby coins within a sphere radius of the player for a limited time of 10 seconds, automatically collecting them without any movement of the player." },
+                    { imagePath: "media/ttt/JumpBoost_Loop.gif", text: "Jump Boost Ability - Increases the player's jump height by ~2x for a duration of 10 seconds, allowing access to elevated platforms on top of cars and other obstacles, or completely avoiding obstacles as a whole." },
+                    { imagePath: "media/ttt/Clock_Loop.gif", text: "Clock Ability - Slows all gameplay down proportionally, simplifying complex upcoming obstacles and giving the player a break for a limited time of 10 seconds." },
+                    { imagePath: "media/ttt/Star_Loop.gif", text: "Star Ability - Multiplies the increase of points by 10x for a duration of 10 seconds, and has a low probability weighting to procedurally spawn. " }
                 ],
                 galleryImagePaths: [
-                    "media/ttt/TTT_G1.jpg",
-                    "media/ttt/TTT_G2.jpg",
-                    "media/ttt/TTT_G3.jpg",
-                    "media/ttt/TTT_G4.jpg",
-                    "media/ttt/TTT_G5.jpg",
-                    "media/ttt/TTT_G6.jpg",
-                    "media/ttt/TTT_G7.jpg",
-                    "media/ttt/TTT_G8.jpg",
-                    "media/ttt/TTT_Blender1.png",
-                    "media/ttt/TTT_Blender2.png",
-                    "media/ttt/TTT_Blender3.png",
-                    "media/ttt/TTT_Blender4.png",
-                    "media/ttt/TTT_Blender5.png",
-                    "media/ttt/TTT_Blender6.png",
-                    "media/ttt/TTT_Blender7.png",
-                    "media/ttt/TTT_Blender8.png",
-                    "media/ttt/TTT_Blender9.png",
-                    "media/ttt/TTT_Doc1.png",
-                    "media/ttt/TTT_Doc2.png",
-                    "media/ttt/TTT_Doc3.png"
+                    "media/ttt/TTT_G1.jpg", "media/ttt/TTT_G2.jpg", "media/ttt/TTT_G3.jpg", "media/ttt/TTT_G4.jpg",
+                    "media/ttt/TTT_G5.jpg", "media/ttt/TTT_G6.jpg", "media/ttt/TTT_G7.jpg", "media/ttt/TTT_G8.jpg",
+                    "media/ttt/TTT_Blender1.png", "media/ttt/TTT_Blender2.png", "media/ttt/TTT_Blender3.png", "media/ttt/TTT_Blender4.png",
+                    "media/ttt/TTT_Blender5.png", "media/ttt/TTT_Blender6.png", "media/ttt/TTT_Blender7.png", "media/ttt/TTT_Blender8.png",
+                    "media/ttt/TTT_Blender9.png", "media/ttt/TTT_Doc1.png", "media/ttt/TTT_Doc2.png", "media/ttt/TTT_Doc3.png"
                 ]
             },
             {
@@ -1632,25 +1609,16 @@
                 description: "The Trials of Loch is a top-down story-based shooter made in MonoGame (C#), where the novice wizard named Loch Morlin must complete his final exam by escaping a series of treacherous dungeons. There are four stages/waves: Orcs - Heavy Melee, Undeads - Light Melee, Demons - Range (Spit/Orbs), and Boss Fight (Teacher). Developed during RIT’s IGME 106 course and was the final group project.",
                 date: "March 2025 - May 2025",
                 tech: ["MonoGame", "C#", "GitHub", "Discord", "Miro", "Grid-Based World Systems", "UI Systems", "Enemy AI Systems", "Combat Systems", "Player Controller", "Level Design"],
-                // Trials of Loch asset paths
                 overviewGifPath: "media/tol/Overview_Loop.gif",
                 contributionItems: [
-                    { imagePath: "media/tol/Player_Loop.gif", text: "Player movement and combat – Implemented responsive controls, attack mechanics, and spell casting." },
-                    { imagePath: "media/tol/Health-Mana_Loop.gif", text: "Health and Mana system – UI integration, resource management, and potion usage." },
-                    { imagePath: "media/tol/GodMode_Loop.gif", text: "God Mode debug tool – Toggle invincibility for testing, with visual feedback and developer shortcuts." },
-                    { imagePath: "media/tol/Wave_Loop.gif", text: "Wave-based enemy spawning – Dynamic difficulty scaling and spawn patterns for each enemy type." }
+                    { imagePath: "media/tol/Player_Loop.gif", text: "Player Controller & Collision System - Handles the core 2D player movement and directional spell casting, which launches a projectile in the direction of the wand/cursor. Interacts with a grid-based collision system with various-shaped collision boxes such as full boxes, horizontal slabs, and vertical slabs." },
+                    { imagePath: "media/tol/Health-Mana_Loop.gif", text: "Data-Driven UI System - Displays a reactive UI system that visually reflects player state. Health dynamically triggers intensified red screen tinting and subtle screenshake at low values, while the mana bar doubles as a visual cooldown indicator for spell casting. Additionally, edge-of-the-screen indicators help guide the player toward remaining enemies for the current wave." },
+                    { imagePath: "media/tol/GodMode_Loop.gif", text: "Debug Tools & Developer Utilities - Includes an in-game debugging toolkit, which has a toggleable “God Mode” that disables damage, collision, and increases movement speed for rapid testing. Added visual debugging overlays for player/world collision bounds, player-to-cursor angle, enemy detection volumes, spawn regions, and screen center reference." },
                 ],
                 galleryImagePaths: [
-                    "media/tol/TOL_G1.jpg",
-                    "media/tol/TOL_G2.jpg",
-                    "media/tol/TOL_G3.jpg",
-                    "media/tol/TOL_G4.jpg",
-                    "media/tol/TOL_T1.png",
-                    "media/tol/TOL_T2.png",
-                    "media/tol/TOL_T3.png",
-                    "media/tol/TOL_T4.png",
-                    "media/tol/TOL_Doc1.jpg",
-                    "media/tol/TOL_Doc2.jpg"
+                    "media/tol/TOL_G1.jpg", "media/tol/TOL_G2.jpg", "media/tol/TOL_G3.jpg", "media/tol/TOL_G4.jpg",
+                    "media/tol/TOL_T1.png", "media/tol/TOL_T2.png", "media/tol/TOL_T3.png", "media/tol/TOL_T4.png",
+                    "media/tol/TOL_Doc1.jpg", "media/tol/TOL_Doc2.jpg"
                 ]
             }
         ];
@@ -1670,8 +1638,6 @@
         const closeDetailBtn = document.querySelector('.close-detail-btn');
         const projectTabBtns = document.querySelectorAll('.project-tab-btn');
         const projectTabContents = document.querySelectorAll('.project-tab-content');
-        const techStackContainer = document.querySelector('.tech-stack');
-        const galleryGrid = document.querySelector('.gallery-grid');
         const lightboxOverlay = document.querySelector('.lightbox-overlay');
         const lightboxImage = document.querySelector('.lightbox-image');
         const lightboxClose = document.querySelector('.lightbox-close');
@@ -1680,17 +1646,7 @@
         const pages = ['home', 'projects', 'about'];
         let currentPageIndex = 0;
         let currentProjectIndex = 0;
-        let isDragging = false;
-        let startPosX = 0;
-        let currentTranslate = 0;
-        let prevTranslate = 0;
-        let animationID = null;
-        let velocity = 0;
-        let lastPosX = 0;
-        let lastTime = 0;
-        let isClick = true;
-        let dragStartX = 0;
-        let dragStartY = 0;
+        let currentProjectButton = null; // reference to external link button for dynamic repositioning
 
         // ==================== UTILITIES ====================
         function isMobile() { return window.innerWidth <= 767; }
@@ -1701,7 +1657,6 @@
             if (isMobile()) {
                 projects.forEach((project, index) => {
                     const thumbnail = createThumbnail(project, index);
-                    // Add click listener for mobile
                     thumbnail.addEventListener('click', (e) => {
                         e.preventDefault();
                         openProjectDetail(index);
@@ -1714,15 +1669,11 @@
                     thumbnail.addEventListener('mousedown', startDrag);
                     thumbnail.addEventListener('touchstart', startDragTouch, { passive: false });
                     thumbnail.addEventListener('click', (e) => {
-                        if (isClick && !isDragging) {
-                            openProjectDetail(index);
-                        }
+                        if (!isDragging) openProjectDetail(index);
                     });
                     projectsCarousel.appendChild(thumbnail);
                 });
-                currentTranslate = 0;
-                prevTranslate = 0;
-                projectsCarousel.style.transform = `translateX(${currentTranslate}px)`;
+                projectsCarousel.style.transform = `translateX(0px)`;
                 projectsCarousel.style.justifyContent = 'center';
                 updateCarouselArrows();
             }
@@ -1732,56 +1683,32 @@
             const thumbnail = document.createElement('div');
             thumbnail.className = 'project-thumbnail';
             thumbnail.dataset.index = index;
-            thumbnail.dataset.projectIndex = index;
-                
-            // Silver/grey shades for fallback thumbnails
             const greys = ['#808080', '#a0a0a0', '#c0c0c0'];
             const color = greys[index % 3];
-                
-            // Create the thumbnail content container
             const contentDiv = document.createElement('div');
             contentDiv.className = 'thumbnail-content';
-                
-            // Create the image container
             const imageDiv = document.createElement('div');
             imageDiv.className = 'thumbnail-image';
-                
-            // Determine the image path based on project name
             let imagePath = '';
-            if (project.name === "Fishodoro") {
-                imagePath = "media/fishodoro/Fishodoro_Banner.png";
-            } else if (project.name === "Turbo Town Thrash") {
-                imagePath = "media/ttt/TTT_Banner.png";
-            } else if (project.name === "The Trials of Loch") {
-                imagePath = "media/tol/TOL_Banner.png";
-            }
-        
+            if (project.name === "Fishodoro") imagePath = "media/fishodoro/Fishodoro_Banner.png";
+            else if (project.name === "Turbo Town Thrash") imagePath = "media/ttt/TTT_Banner.png";
+            else if (project.name === "The Trials of Loch") imagePath = "media/tol/TOL_Banner.png";
             if (imagePath) {
-                // Use the actual image
                 imageDiv.style.background = 'none';
-                imageDiv.style.display = 'block';
                 imageDiv.innerHTML = `<img src="${imagePath}" alt="${project.name}" style="width:100%; height:100%; object-fit:cover;" onerror="this.onerror=null; this.parentNode.innerHTML='<i class=\\'fas fa-gamepad\\' style=\\'font-size:5rem; color:${color}; opacity:0.7;\\'></i>';">`;
             } else {
-                // Placeholder with icon and gradient (for any future projects)
                 imageDiv.style.background = `linear-gradient(45deg, ${color}30, ${color}10)`;
                 imageDiv.style.display = 'flex';
                 imageDiv.style.alignItems = 'center';
                 imageDiv.style.justifyContent = 'center';
                 imageDiv.innerHTML = `<i class="fas fa-gamepad" style="font-size: 5rem; color: ${color}; opacity: 0.7;"></i>`;
             }
-        
-            // Overlay with title and role
             const overlayDiv = document.createElement('div');
             overlayDiv.className = 'thumbnail-overlay';
-            overlayDiv.innerHTML = `
-                <div class="thumbnail-title">${project.name}</div>
-                <div class="thumbnail-role">${project.role}</div>
-            `;
-        
+            overlayDiv.innerHTML = `<div class="thumbnail-title">${project.name}</div><div class="thumbnail-role">${project.role}</div>`;
             contentDiv.appendChild(imageDiv);
             contentDiv.appendChild(overlayDiv);
             thumbnail.appendChild(contentDiv);
-        
             return thumbnail;
         }
 
@@ -1797,6 +1724,7 @@
         function closeProjectDetail() {
             projectDetailOverlay.classList.remove('active');
             document.body.classList.remove('overlay-open');
+            currentProjectButton = null;
         }
 
         function switchTab(tabId) {
@@ -1808,24 +1736,28 @@
                 content.classList.remove('active');
                 if (content.id === `${tabId}-tab`) content.classList.add('active');
             });
+            resetTabScrolls();
         }
 
-        // Forcefully reset scroll positions for all tabs
         function resetTabScrolls() {
-            projectTabContents.forEach(tab => {
-                tab.scrollTop = 0;
-                // Also use scrollTo for good measure
-                if (tab.scrollTo) tab.scrollTo(0, 0);
-            });
+            projectTabContents.forEach(tab => { tab.scrollTop = 0; if (tab.scrollTo) tab.scrollTo(0, 0); });
         }
 
         function updateProjectDetailContent(projectIndex) {
             const project = projects[projectIndex];
-            document.querySelector('.project-detail-title').textContent = `${project.name}`;
-            
-            // Overview
-            const overviewGifDiv = document.querySelector('#overview-tab .overview-gif');
-            overviewGifDiv.innerHTML = ''; // Clear
+            document.querySelector('.project-detail-title').textContent = project.name;
+
+            // ---- OVERVIEW TAB ----
+            const overviewLayout = document.querySelector('#overview-tab .overview-layout');
+            overviewLayout.innerHTML = ''; // clear
+
+            // Left column (image + button container)
+            const leftCol = document.createElement('div');
+            leftCol.className = 'overview-left';
+
+            // GIF
+            const gifDiv = document.createElement('div');
+            gifDiv.className = 'overview-gif';
             if (project.overviewGifPath) {
                 const img = document.createElement('img');
                 img.src = project.overviewGifPath;
@@ -1833,7 +1765,6 @@
                 img.style.width = '100%';
                 img.style.height = '100%';
                 img.style.objectFit = 'contain';
-                // Performance: lazy load + async decode
                 img.loading = 'lazy';
                 img.decoding = 'async';
                 img.onerror = function() {
@@ -1841,34 +1772,91 @@
                     this.style.display = 'none';
                     const fallback = document.createElement('div');
                     fallback.className = 'gif-placeholder';
-                    fallback.innerHTML = `<i class="fas ${project.overviewGif || 'fa-play-circle'}"></i><div>${project.name} Gameplay</div>`;
-                    overviewGifDiv.appendChild(fallback);
+                    fallback.innerHTML = `<i class="fas fa-play-circle"></i><div>${project.name} Gameplay</div>`;
+                    gifDiv.appendChild(fallback);
                 };
-                overviewGifDiv.appendChild(img);
+                gifDiv.appendChild(img);
             } else {
-                overviewGifDiv.innerHTML = `<div class="gif-placeholder"><i class="fas ${project.overviewGif}"></i><div>${project.name} Gameplay</div></div>`;
+                gifDiv.innerHTML = `<div class="gif-placeholder"><i class="fas fa-play-circle"></i><div>${project.name} Gameplay</div></div>`;
             }
-            
-            document.querySelector('#overview-tab .overview-description').textContent = project.description;
-            const techStack = document.querySelector('#overview-tab .tech-stack');
-            techStack.innerHTML = '';
+            leftCol.appendChild(gifDiv);
+
+            // Button container (left) – for desktop
+            const leftButtonContainer = document.createElement('div');
+            leftButtonContainer.className = 'overview-button-container left';
+            leftCol.appendChild(leftButtonContainer);
+
+            // Right column (info + button container for mobile)
+            const rightCol = document.createElement('div');
+            rightCol.className = 'overview-info';
+
+            const descPara = document.createElement('p');
+            descPara.className = 'overview-description';
+            descPara.textContent = project.description;
+            rightCol.appendChild(descPara);
+
+            const rightButtonContainer = document.createElement('div');
+            rightButtonContainer.className = 'overview-button-container right';
+            rightCol.appendChild(rightButtonContainer);
+
+            // Tech stack heading
+            const techHeading = document.createElement('h3');
+            techHeading.style.fontFamily = 'var(--font-accent)';
+            techHeading.style.fontSize = '1.5rem';
+            techHeading.style.fontWeight = '300';
+            techHeading.style.letterSpacing = '2px';
+            techHeading.style.color = 'var(--color-text-light)';
+            techHeading.textContent = 'TECH STACK';
+            rightCol.appendChild(techHeading);
+
+            const techStack = document.createElement('div');
+            techStack.className = 'tech-stack';
             project.tech.forEach(tech => {
                 const tag = document.createElement('span');
                 tag.className = 'tech-tag';
                 tag.textContent = tech;
                 techStack.appendChild(tag);
             });
+            rightCol.appendChild(techStack);
 
-            // Contribution
+            overviewLayout.appendChild(leftCol);
+            overviewLayout.appendChild(rightCol);
+
+            // Create external link button
+            let linkHtml = '';
+            if (project.name === 'Fishodoro') {
+                linkHtml = '<a href="https://fishodoro.com/" target="_blank" rel="noopener noreferrer" class="external-link-btn"><i class="fas fa-globe"></i>WEBSITE</a>';
+            } else if (project.name === 'Turbo Town Thrash') {
+                linkHtml = '<a href="https://play.google.com/store/apps/details?id=com.ZorioDEV.TurboTownThrash" target="_blank" rel="noopener noreferrer" class="external-link-btn"><i class="fab fa-google-play"></i>GOOGLE PLAY</a>';
+            } else if (project.name === 'The Trials of Loch') {
+                linkHtml = '<a href="https://youtu.be/jiYb-xPbeS0" target="_blank" rel="noopener noreferrer" class="external-link-btn"><i class="fab fa-youtube"></i>DEMO</a>';
+            }
+
+            if (linkHtml) {
+                const linkDiv = document.createElement('div');
+                linkDiv.className = 'project-external-link';
+                linkDiv.innerHTML = linkHtml;
+                currentProjectButton = linkDiv; // store reference
+
+                // Place button in correct container based on screen size
+                if (window.innerWidth <= 767) {
+                    rightButtonContainer.appendChild(linkDiv);
+                } else {
+                    leftButtonContainer.appendChild(linkDiv);
+                }
+            } else {
+                currentProjectButton = null;
+            }
+
+            // ---- CONTRIBUTION TAB ----
             const contributionLayout = document.querySelector('#contribution-tab .contribution-layout');
             contributionLayout.innerHTML = '';
             if (project.contributionItems && project.contributionItems.length > 0) {
                 project.contributionItems.forEach((item, idx) => {
                     const itemDiv = document.createElement('div');
                     itemDiv.className = 'contribution-item';
-                    if (idx % 2 === 1) itemDiv.classList.add('reverse'); // alternate
+                    if (idx % 2 === 1) itemDiv.classList.add('reverse');
 
-                    // Image container
                     const imageDiv = document.createElement('div');
                     imageDiv.className = 'contribution-image';
                     const img = document.createElement('img');
@@ -1877,7 +1865,6 @@
                     img.style.width = '100%';
                     img.style.height = '100%';
                     img.style.objectFit = 'contain';
-                    // Performance: lazy load + async decode
                     img.loading = 'lazy';
                     img.decoding = 'async';
                     img.onerror = function() {
@@ -1885,12 +1872,11 @@
                         this.style.display = 'none';
                         const fallback = document.createElement('div');
                         fallback.className = 'gif-placeholder';
-                        fallback.innerHTML = `<i class="fas ${project.contributionImages ? project.contributionImages[idx % project.contributionImages.length] : 'fa-code'}"></i><div>Contribution ${idx+1}</div>`;
+                        fallback.innerHTML = `<i class="fas fa-code"></i><div>Contribution ${idx+1}</div>`;
                         imageDiv.appendChild(fallback);
                     };
                     imageDiv.appendChild(img);
 
-                    // Text container
                     const textDiv = document.createElement('div');
                     textDiv.className = 'contribution-text';
                     const p = document.createElement('p');
@@ -1901,34 +1887,9 @@
                     itemDiv.appendChild(textDiv);
                     contributionLayout.appendChild(itemDiv);
                 });
-            } else {
-                // Fallback to old two-item layout
-                // Create two items using the old data
-                for (let i = 0; i < 2; i++) {
-                    const itemDiv = document.createElement('div');
-                    itemDiv.className = 'contribution-item';
-                    if (i === 1) itemDiv.classList.add('reverse');
-
-                    const imageDiv = document.createElement('div');
-                    imageDiv.className = 'contribution-image';
-                    const fallback = document.createElement('div');
-                    fallback.className = 'gif-placeholder';
-                    fallback.innerHTML = `<i class="fas ${project.contributionImages[i]}"></i><div>Contribution: ${i === 0 ? 'AI System' : 'Optimization'}</div>`;
-                    imageDiv.appendChild(fallback);
-
-                    const textDiv = document.createElement('div');
-                    textDiv.className = 'contribution-text';
-                    const p = document.createElement('p');
-                    p.textContent = i === 0 ? project.contributionText1 : project.contributionText2;
-                    textDiv.appendChild(p);
-
-                    itemDiv.appendChild(imageDiv);
-                    itemDiv.appendChild(textDiv);
-                    contributionLayout.appendChild(itemDiv);
-                }
             }
 
-            // Gallery
+            // ---- GALLERY TAB ----
             const galleryGrid = document.querySelector('#gallery-tab .gallery-grid');
             galleryGrid.innerHTML = '';
             if (project.galleryImagePaths && project.galleryImagePaths.length > 0) {
@@ -1942,7 +1903,6 @@
                     img.style.width = '100%';
                     img.style.height = '100%';
                     img.style.objectFit = 'cover';
-                    // Performance: lazy load + async decode
                     img.loading = 'lazy';
                     img.decoding = 'async';
                     img.onerror = function() {
@@ -1950,25 +1910,11 @@
                         this.style.display = 'none';
                         const placeholder = document.createElement('div');
                         placeholder.className = 'gallery-placeholder';
-                        placeholder.innerHTML = `<i class="fas ${project.galleryImages ? project.galleryImages[idx % project.galleryImages.length] : 'fa-image'}" style="font-size: 3rem; color: #ccc;"></i><span style="font-size: 0.9rem; color: #aaa;">Image ${idx+1}</span>`;
+                        placeholder.innerHTML = `<i class="fas fa-image" style="font-size: 3rem; color: #ccc;"></i><span style="font-size: 0.9rem; color: #aaa;">Image ${idx+1}</span>`;
                         item.appendChild(placeholder);
                     };
                     item.appendChild(img);
-                    item.addEventListener('click', () => { openLightbox(path, `Gallery ${idx+1}`); });
-                    galleryGrid.appendChild(item);
-                });
-            } else {
-                // Fallback to old icon gallery
-                project.galleryImages.forEach((icon, idx) => {
-                    const item = document.createElement('div');
-                    item.className = 'gallery-item';
-                    item.innerHTML = `
-                        <div class="gallery-placeholder">
-                            <i class="fas ${icon}" style="font-size: 3rem; margin-bottom: 10px; color: #ccc;"></i>
-                            <span style="font-size: 0.9rem; color: #aaa;">Screenshot ${idx+1}</span>
-                        </div>
-                    `;
-                    item.addEventListener('click', () => { openLightbox(icon, `Screenshot ${idx+1}`); });
+                    item.addEventListener('click', () => openLightbox(path, `Gallery ${idx+1}`));
                     galleryGrid.appendChild(item);
                 });
             }
@@ -1981,26 +1927,27 @@
         function openLightbox(src, alt) {
             lightboxImage.src = src;
             lightboxImage.alt = alt;
-            // Remove any inline styles that might interfere
             lightboxImage.style.background = 'none';
-            lightboxImage.style.padding = '0';
-            lightboxImage.style.display = 'block';
-            lightboxImage.style.width = 'auto';
-            lightboxImage.style.height = 'auto';
-            lightboxImage.style.maxWidth = '90%';
-            lightboxImage.style.maxHeight = '85%';
-            lightboxImage.style.objectFit = 'contain';
-            lightboxImage.innerHTML = ''; // clear any inner content
             lightboxOverlay.classList.add('active');
         }
-
         function closeLightbox() {
             lightboxOverlay.classList.remove('active');
             lightboxImage.src = '';
-            lightboxImage.innerHTML = '';
         }
 
         // ==================== DRAG (DESKTOP CAROUSEL) ====================
+        let isDragging = false;
+        let startPosX = 0;
+        let currentTranslate = 0;
+        let prevTranslate = 0;
+        let animationID = null;
+        let velocity = 0;
+        let lastPosX = 0;
+        let lastTime = 0;
+        let isClick = true;
+        let dragStartX = 0;
+        let dragStartY = 0;
+
         function startDrag(e) {
             if (isMobile()) return;
             e.preventDefault();
@@ -2061,7 +2008,6 @@
                 targetPage.classList.add('active', enterClass);
                 currentPageIndex = targetPageIndex;
                 navLinks.forEach(link => link.classList.toggle('active', link.dataset.page === page));
-                // No background images to toggle – removed
                 updatePageArrows();
                 if (page === 'projects') initProjectsCarousel();
             }, 400);
@@ -2072,7 +2018,6 @@
             prevPageBtn.classList.toggle('hidden', currentPageIndex === 0);
             nextPageBtn.classList.toggle('hidden', currentPageIndex === pages.length - 1);
         }
-
         function updateCarouselArrows() {
             if (isMobile() || !prevCarouselBtn || !nextCarouselBtn) return;
             prevCarouselBtn.classList.add('hidden');
@@ -2095,20 +2040,31 @@
 
         closeDetailBtn.addEventListener('click', closeProjectDetail);
         projectDetailOverlay.addEventListener('click', (e) => { if (e.target === projectDetailOverlay) closeProjectDetail(); });
-
         projectTabBtns.forEach(btn => btn.addEventListener('click', () => switchTab(btn.dataset.tab)));
-
         lightboxClose.addEventListener('click', closeLightbox);
         lightboxOverlay.addEventListener('click', (e) => { if (e.target === lightboxOverlay) closeLightbox(); });
 
-        // Resume buttons now use href directly – no need for JavaScript overrides.
-        // The default link behavior will open the PDF in a new tab.
-
         document.addEventListener('keydown', (e) => { if (projectDetailOverlay.classList.contains('active') && e.key === 'Escape') closeProjectDetail(); });
 
+        // Reposition external link button on window resize (if project detail is open)
         window.addEventListener('resize', () => {
+            const wasMobile = isMobile(); // we need to use the updated width
+            if (projectDetailOverlay.classList.contains('active') && currentProjectButton) {
+                const leftContainer = document.querySelector('#overview-tab .overview-left .overview-button-container.left');
+                const rightContainer = document.querySelector('#overview-tab .overview-info .overview-button-container.right');
+                if (!leftContainer || !rightContainer) return;
+                const isMobileNow = window.innerWidth <= 767;
+                const currentParent = currentProjectButton.parentNode;
+                if (isMobileNow && currentParent === leftContainer) {
+                    rightContainer.appendChild(currentProjectButton);
+                } else if (!isMobileNow && currentParent === rightContainer) {
+                    leftContainer.appendChild(currentProjectButton);
+                }
+            }
+            // Update carousel and page arrows as before
             if (currentPageIndex === 1) initProjectsCarousel();
-            updatePageArrows(); updateCarouselArrows();
+            updatePageArrows();
+            updateCarouselArrows();
             mobileResumeBtn.style.display = isMobile() ? 'inline-flex' : 'none';
         });
 
