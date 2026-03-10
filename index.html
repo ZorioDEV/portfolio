@@ -1375,6 +1375,15 @@
         .projects-carousel-container::-webkit-scrollbar {
             display: none;
         }
+
+        /* ===== MOBILE FIX: OVERVIEW GIF MATCHES CONTRIBUTION IMAGES ===== */
+        @media (max-width: 767px) {
+            .overview-gif {
+                aspect-ratio: auto;
+                min-height: 250px;
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1611,9 +1620,9 @@
                 tech: ["MonoGame", "C#", "GitHub", "Discord", "Miro", "Grid-Based World Systems", "UI Systems", "Enemy AI Systems", "Combat Systems", "Player Controller", "Level Design"],
                 overviewGifPath: "media/tol/Overview_Loop.gif",
                 contributionItems: [
-                    { imagePath: "media/tol/Player_Loop.gif", text: "Player Controller & Collision System - Handles the core 2D player movement and directional spell casting, which launches a projectile in the direction of the wand/cursor. Interacts with a grid-based collision system with various-shaped collision boxes such as full boxes, horizontal slabs, and vertical slabs." },
-                    { imagePath: "media/tol/Health-Mana_Loop.gif", text: "Data-Driven UI System - Displays a reactive UI system that visually reflects player state. Health dynamically triggers intensified red screen tinting and subtle screenshake at low values, while the mana bar doubles as a visual cooldown indicator for spell casting. Additionally, edge-of-the-screen indicators help guide the player toward remaining enemies for the current wave." },
-                    { imagePath: "media/tol/GodMode_Loop.gif", text: "Debug Tools & Developer Utilities - Includes an in-game debugging toolkit, which has a toggleable “God Mode” that disables damage, collision, and increases movement speed for rapid testing. Added visual debugging overlays for player/world collision bounds, player-to-cursor angle, enemy detection volumes, spawn regions, and screen center reference." },
+                    { imagePath: "media/tol/Player_Loop.gif", text: "Player Controller & Collision System - Handles the core 2D player movement and spell casting, which launches a projectile in the direction of the wand/cursor. Interacts with a grid-based collision system with various-shaped collision boxes such as full boxes, horizontal slabs, and vertical slabs." },
+                    { imagePath: "media/tol/Health-Mana_Loop.gif", text: "Data-Driven UI System - Displays a reactive UI system that reflects the player's current state. Health dynamically intensifies a red screen tinting and slight screenshake at low values, while the mana bar represents a visual cooldown indicator for spell casting. Additionally, edge-of-the-screen indicators help guide the player toward remaining enemies for the current wave." },
+                    { imagePath: "media/tol/GodMode_Loop.gif", text: "Debug Tools & Developer Utilities - Includes an in-game debugging toolkit, which has a toggleable “God Mode” that disables damage, collision, and increases movement speed for rapid testing. There is also visual debugging overlays for player/world collision bounds, player-to-cursor angle, enemy detection volumes, spawn regions, and screen center reference." },
                 ],
                 galleryImagePaths: [
                     "media/tol/TOL_G1.jpg", "media/tol/TOL_G2.jpg", "media/tol/TOL_G3.jpg", "media/tol/TOL_G4.jpg",
